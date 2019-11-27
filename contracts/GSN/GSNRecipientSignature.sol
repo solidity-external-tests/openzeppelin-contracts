@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "./GSNRecipient.sol";
 import "../cryptography/ECDSA.sol";
@@ -9,7 +9,7 @@ import "../cryptography/ECDSA.sol";
  * performs validations off-chain. Note that nothing is charged to the user in this scheme. Thus, the server should make
  * sure to account for this in their economic and threat model.
  */
-contract GSNRecipientSignature is GSNRecipient {
+abstract contract GSNRecipientSignature is GSNRecipient {
     using ECDSA for bytes32;
 
     address private _trustedSigner;
@@ -38,9 +38,11 @@ contract GSNRecipientSignature is GSNRecipient {
         uint256 gasLimit,
         uint256 nonce,
         bytes calldata approvalData,
-        uint256
+        uint256 maxPossibleCharge
     )
         external
+        virtual
+        override
         view
         returns (uint256, bytes memory)
     {
@@ -62,11 +64,11 @@ contract GSNRecipientSignature is GSNRecipient {
         }
     }
 
-    function _preRelayedCall(bytes memory) internal returns (bytes32) {
+    function _preRelayedCall(bytes memory) internal virtual override returns (bytes32) {
         // solhint-disable-previous-line no-empty-blocks
     }
 
-    function _postRelayedCall(bytes memory, bool, uint256, bytes32) internal {
+    function _postRelayedCall(bytes memory, bool, uint256, bytes32) internal virtual override {
         // solhint-disable-previous-line no-empty-blocks
     }
 }

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "./IRelayRecipient.sol";
 import "./IRelayHub.sol";
@@ -15,7 +15,7 @@ import "./Context.sol";
  * information on how to use the pre-built {GSNRecipientSignature} and
  * {GSNRecipientERC20Fee}, or how to write your own.
  */
-contract GSNRecipient is IRelayRecipient, Context {
+abstract contract GSNRecipient is IRelayRecipient, Context {
     // Default RelayHub address, deployed on mainnet and all testnets at the same address
     address private _relayHub = 0xD216153c06E857cD7f72665E0aF1d7D82172F494;
 
@@ -33,7 +33,7 @@ contract GSNRecipient is IRelayRecipient, Context {
     /**
      * @dev Returns the address of the {IRelayHub} contract for this recipient.
      */
-    function getHubAddr() public view returns (address) {
+    function getHubAddr() public override view returns (address) {
         return _relayHub;
     }
 
@@ -85,7 +85,7 @@ contract GSNRecipient is IRelayRecipient, Context {
      *
      * IMPORTANT: Contracts derived from {GSNRecipient} should never use `msg.sender`, and use {_msgSender} instead.
      */
-    function _msgSender() internal view returns (address payable) {
+    function _msgSender() internal virtual override view returns (address payable) {
         if (msg.sender != _relayHub) {
             return msg.sender;
         } else {
@@ -99,7 +99,7 @@ contract GSNRecipient is IRelayRecipient, Context {
      *
      * IMPORTANT: Contracts derived from {GSNRecipient} should never use `msg.data`, and use {_msgData} instead.
      */
-    function _msgData() internal view returns (bytes memory) {
+    function _msgData() internal virtual override view returns (bytes memory) {
         if (msg.sender != _relayHub) {
             return msg.data;
         } else {
@@ -119,7 +119,7 @@ contract GSNRecipient is IRelayRecipient, Context {
      *
      * - the caller must be the `RelayHub` contract.
      */
-    function preRelayedCall(bytes calldata context) external returns (bytes32) {
+    function preRelayedCall(bytes calldata context) external override returns (bytes32) {
         require(msg.sender == getHubAddr(), "GSNRecipient: caller is not RelayHub");
         return _preRelayedCall(context);
     }
@@ -131,7 +131,7 @@ contract GSNRecipient is IRelayRecipient, Context {
      * must implement this function with any relayed-call preprocessing they may wish to do.
      *
      */
-    function _preRelayedCall(bytes memory context) internal returns (bytes32);
+    function _preRelayedCall(bytes memory context) internal virtual returns (bytes32);
 
     /**
      * @dev See `IRelayRecipient.postRelayedCall`.
@@ -142,7 +142,7 @@ contract GSNRecipient is IRelayRecipient, Context {
      *
      * - the caller must be the `RelayHub` contract.
      */
-    function postRelayedCall(bytes calldata context, bool success, uint256 actualCharge, bytes32 preRetVal) external {
+    function postRelayedCall(bytes calldata context, bool success, uint256 actualCharge, bytes32 preRetVal) external override {
         require(msg.sender == getHubAddr(), "GSNRecipient: caller is not RelayHub");
         _postRelayedCall(context, success, actualCharge, preRetVal);
     }
@@ -154,7 +154,7 @@ contract GSNRecipient is IRelayRecipient, Context {
      * must implement this function with any relayed-call postprocessing they may wish to do.
      *
      */
-    function _postRelayedCall(bytes memory context, bool success, uint256 actualCharge, bytes32 preRetVal) internal;
+    function _postRelayedCall(bytes memory context, bool success, uint256 actualCharge, bytes32 preRetVal) internal virtual;
 
     /**
      * @dev Return this in acceptRelayedCall to proceed with the execution of a relayed call. Note that this contract

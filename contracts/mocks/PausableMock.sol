@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../lifecycle/Pausable.sol";
 import "./PauserRoleMock.sol";
@@ -19,5 +19,9 @@ contract PausableMock is Pausable, PauserRoleMock {
 
     function drasticMeasure() external whenPaused {
         drasticMeasureTaken = true;
+    }
+
+    function _removePauser(address account) internal override(PauserRole, PauserRoleMock) {
+        super._removePauser(account);
     }
 }

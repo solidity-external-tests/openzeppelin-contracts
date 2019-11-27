@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "./GSNRecipient.sol";
 import "../math/SafeMath.sol";
@@ -62,6 +62,8 @@ contract GSNRecipientERC20Fee is GSNRecipient {
         uint256 maxPossibleCharge
     )
         external
+        virtual
+        override
         view
         returns (uint256, bytes memory)
     {
@@ -78,7 +80,7 @@ contract GSNRecipientERC20Fee is GSNRecipient {
      * actual charge, necessary because we cannot predict how much gas the execution will actually need. The remainder
      * is returned to the user in {_postRelayedCall}.
      */
-    function _preRelayedCall(bytes memory context) internal returns (bytes32) {
+    function _preRelayedCall(bytes memory context) internal virtual override returns (bytes32) {
         (address from, uint256 maxPossibleCharge) = abi.decode(context, (address, uint256));
 
         // The maximum token charge is pre-charged from the user
@@ -88,7 +90,7 @@ contract GSNRecipientERC20Fee is GSNRecipient {
     /**
      * @dev Returns to the user the extra amount that was previously charged, once the actual execution cost is known.
      */
-    function _postRelayedCall(bytes memory context, bool, uint256 actualCharge, bytes32) internal {
+    function _postRelayedCall(bytes memory context, bool, uint256 actualCharge, bytes32) internal virtual override {
         (address from, uint256 maxPossibleCharge, uint256 transactionFee, uint256 gasPrice) =
             abi.decode(context, (address, uint256, uint256, uint256));
 
@@ -117,13 +119,29 @@ contract __unstable__ERC20PrimaryAdmin is ERC20, ERC20Detailed, Secondary {
         // solhint-disable-previous-line no-empty-blocks
     }
 
+    function totalSupply() public override(ERC20, IERC20) view returns (uint256) {
+        return super.totalSupply();
+    }
+
+    function balanceOf(address account) public override(ERC20, IERC20) view returns (uint256) {
+        return super.balanceOf(account);
+    }
+
+    function transfer(address recipient, uint256 amount) public override(ERC20, IERC20) returns (bool) {
+        return super.transfer(recipient, amount);
+    }
+
+    function approve(address spender, uint256 amount) public override(ERC20, IERC20) returns (bool) {
+        return super.approve(spender, amount);
+    }
+
     // The primary account (GSNRecipientERC20Fee) can mint tokens
     function mint(address account, uint256 amount) public onlyPrimary {
         _mint(account, amount);
     }
 
     // The primary account has 'infinite' allowance for all token holders
-    function allowance(address owner, address spender) public view returns (uint256) {
+    function allowance(address owner, address spender) public override(ERC20, IERC20) view returns (uint256) {
         if (spender == primary()) {
             return UINT256_MAX;
         } else {
@@ -132,7 +150,7 @@ contract __unstable__ERC20PrimaryAdmin is ERC20, ERC20Detailed, Secondary {
     }
 
     // Allowance for the primary account cannot be changed (it is always 'infinite')
-    function _approve(address owner, address spender, uint256 value) internal {
+    function _approve(address owner, address spender, uint256 value) internal override {
         if (spender == primary()) {
             return;
         } else {
@@ -140,7 +158,7 @@ contract __unstable__ERC20PrimaryAdmin is ERC20, ERC20Detailed, Secondary {
         }
     }
 
-    function transferFrom(address sender, address recipient, uint256 amount) public returns (bool) {
+    function transferFrom(address sender, address recipient, uint256 amount) public override(ERC20, IERC20) returns (bool) {
         if (recipient == primary()) {
             _transfer(sender, recipient, amount);
             return true;

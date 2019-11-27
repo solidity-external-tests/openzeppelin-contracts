@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../../math/SafeMath.sol";
 import "../Crowdsale.sol";
@@ -7,7 +7,7 @@ import "../Crowdsale.sol";
  * @title CappedCrowdsale
  * @dev Crowdsale with a limit for total contributions.
  */
-contract CappedCrowdsale is Crowdsale {
+abstract contract CappedCrowdsale is Crowdsale {
     using SafeMath for uint256;
 
     uint256 private _cap;
@@ -41,7 +41,7 @@ contract CappedCrowdsale is Crowdsale {
      * @param beneficiary Token purchaser
      * @param weiAmount Amount of wei contributed
      */
-    function _preValidatePurchase(address beneficiary, uint256 weiAmount) internal view {
+    function _preValidatePurchase(address beneficiary, uint256 weiAmount) internal virtual override view {
         super._preValidatePurchase(beneficiary, weiAmount);
         require(weiRaised().add(weiAmount) <= _cap, "CappedCrowdsale: cap exceeded");
     }

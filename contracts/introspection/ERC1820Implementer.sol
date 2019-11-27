@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "./IERC1820Implementer.sol";
 
@@ -18,7 +18,7 @@ contract ERC1820Implementer is IERC1820Implementer {
     /**
      * See {IERC1820Implementer-canImplementInterfaceForAddress}.
      */
-    function canImplementInterfaceForAddress(bytes32 interfaceHash, address account) external view returns (bytes32) {
+    function canImplementInterfaceForAddress(bytes32 interfaceHash, address account) external override view returns (bytes32) {
         return _supportedInterfaces[interfaceHash][account] ? ERC1820_ACCEPT_MAGIC : bytes32(0x00);
     }
 

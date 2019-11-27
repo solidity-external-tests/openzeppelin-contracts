@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../../GSN/Context.sol";
 import "../Roles.sol";
@@ -37,7 +37,7 @@ contract CapperRole is Context {
         emit CapperAdded(account);
     }
 
-    function _removeCapper(address account) internal {
+    function _removeCapper(address account) internal virtual {
         _cappers.remove(account);
         emit CapperRemoved(account);
     }

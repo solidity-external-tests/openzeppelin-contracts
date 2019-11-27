@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../access/roles/CapperRole.sol";
 
@@ -12,7 +12,7 @@ contract CapperRoleMock is CapperRole {
     }
 
     // Causes a compilation error if super._removeCapper is not internal
-    function _removeCapper(address account) internal {
+    function _removeCapper(address account) internal virtual override {
         super._removeCapper(account);
     }
 }

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "./ConditionalEscrow.sol";
 
@@ -50,7 +50,7 @@ contract RefundEscrow is ConditionalEscrow {
      * @dev Stores funds that may later be refunded.
      * @param refundee The address funds will be sent to if a refund occurs.
      */
-    function deposit(address refundee) public payable {
+    function deposit(address refundee) public override payable {
         require(_state == State.Active, "RefundEscrow: can only deposit while active");
         super.deposit(refundee);
     }
@@ -86,7 +86,7 @@ contract RefundEscrow is ConditionalEscrow {
      * @dev Returns whether refundees can withdraw their deposits (be refunded). The overridden function receives a
      * 'payee' argument, but we ignore it here since the condition is global, not per-payee.
      */
-    function withdrawalAllowed(address) public view returns (bool) {
+    function withdrawalAllowed(address) public override view returns (bool) {
         return _state == State.Refunding;
     }
 }

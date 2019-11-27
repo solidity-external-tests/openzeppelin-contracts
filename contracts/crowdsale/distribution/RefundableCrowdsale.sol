@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../../GSN/Context.sol";
 import "../../math/SafeMath.sol";
@@ -15,7 +15,7 @@ import "../../payment/escrow/RefundEscrow.sol";
  * the goal is unlikely to be met, they sell their tokens (possibly at a discount). The attacker will be refunded when
  * the crowdsale is finalized, and the users that purchased from them will be left with worthless tokens.
  */
-contract RefundableCrowdsale is Context, FinalizableCrowdsale {
+abstract contract RefundableCrowdsale is Context, FinalizableCrowdsale {
     using SafeMath for uint256;
 
     // minimum amount of funds to be raised in weis
@@ -63,7 +63,7 @@ contract RefundableCrowdsale is Context, FinalizableCrowdsale {
     /**
      * @dev Escrow finalization task, called when finalize() is called.
      */
-    function _finalization() internal {
+    function _finalization() internal override {
         if (goalReached()) {
             _escrow.close();
             _escrow.beneficiaryWithdraw();
@@ -77,7 +77,7 @@ contract RefundableCrowdsale is Context, FinalizableCrowdsale {
     /**
      * @dev Overrides Crowdsale fund forwarding, sending funds to escrow.
      */
-    function _forwardFunds() internal {
+    function _forwardFunds() internal virtual override {
         _escrow.deposit.value(msg.value)(_msgSender());
     }
 }

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../../math/SafeMath.sol";
 import "../validation/TimedCrowdsale.sol";
@@ -8,7 +8,7 @@ import "../validation/TimedCrowdsale.sol";
  * @dev Extension of TimedCrowdsale with a one-off finalization action, where one
  * can do extra work after finishing.
  */
-contract FinalizableCrowdsale is TimedCrowdsale {
+abstract contract FinalizableCrowdsale is TimedCrowdsale {
     using SafeMath for uint256;
 
     bool private _finalized;
@@ -45,7 +45,7 @@ contract FinalizableCrowdsale is TimedCrowdsale {
      * should call super._finalization() to ensure the chain of finalization is
      * executed entirely.
      */
-    function _finalization() internal {
+    function _finalization() internal virtual {
         // solhint-disable-previous-line no-empty-blocks
     }
 }

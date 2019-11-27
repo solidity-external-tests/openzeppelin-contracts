@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../access/roles/MinterRole.sol";
 
@@ -12,7 +12,7 @@ contract MinterRoleMock is MinterRole {
     }
 
     // Causes a compilation error if super._removeMinter is not internal
-    function _removeMinter(address account) internal {
+    function _removeMinter(address account) internal virtual override {
         super._removeMinter(account);
     }
 }

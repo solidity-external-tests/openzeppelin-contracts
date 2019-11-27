@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../access/roles/SignerRole.sol";
 
@@ -12,7 +12,7 @@ contract SignerRoleMock is SignerRole {
     }
 
     // Causes a compilation error if super._removeSigner is not internal
-    function _removeSigner(address account) internal {
+    function _removeSigner(address account) internal override {
         super._removeSigner(account);
     }
 }

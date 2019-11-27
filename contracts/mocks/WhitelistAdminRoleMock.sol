@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../access/roles/WhitelistAdminRole.sol";
 
@@ -12,7 +12,7 @@ contract WhitelistAdminRoleMock is WhitelistAdminRole {
     }
 
     // Causes a compilation error if super._removeWhitelistAdmin is not internal
-    function _removeWhitelistAdmin(address account) internal {
+    function _removeWhitelistAdmin(address account) internal override {
         super._removeWhitelistAdmin(account);
     }
 }

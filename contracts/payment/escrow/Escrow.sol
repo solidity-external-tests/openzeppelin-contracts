@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../../math/SafeMath.sol";
 import "../../ownership/Secondary.sol";
@@ -34,7 +34,7 @@ contract Escrow is Secondary {
      * @dev Stores the sent amount as credit to be withdrawn.
      * @param payee The destination address of the funds.
      */
-    function deposit(address payee) public onlyPrimary payable {
+    function deposit(address payee) public virtual onlyPrimary payable {
         uint256 amount = msg.value;
         _deposits[payee] = _deposits[payee].add(amount);
 
@@ -52,7 +52,7 @@ contract Escrow is Secondary {
      *
      * @param payee The address whose funds will be withdrawn and transferred to.
      */
-    function withdraw(address payable payee) public onlyPrimary {
+    function withdraw(address payable payee) public virtual onlyPrimary {
         uint256 payment = _deposits[payee];
 
         _deposits[payee] = 0;

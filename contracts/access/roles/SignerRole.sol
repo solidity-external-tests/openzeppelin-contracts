@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../../GSN/Context.sol";
 import "../Roles.sol";
@@ -37,7 +37,7 @@ contract SignerRole is Context {
         emit SignerAdded(account);
     }
 
-    function _removeSigner(address account) internal {
+    function _removeSigner(address account) internal virtual {
         _signers.remove(account);
         emit SignerRemoved(account);
     }

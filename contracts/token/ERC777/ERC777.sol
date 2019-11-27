@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../../GSN/Context.sol";
 import "./IERC777.sol";
@@ -85,14 +85,14 @@ contract ERC777 is Context, IERC777, IERC20 {
     /**
      * @dev See {IERC777-name}.
      */
-    function name() public view returns (string memory) {
+    function name() public override view returns (string memory) {
         return _name;
     }
 
     /**
      * @dev See {IERC777-symbol}.
      */
-    function symbol() public view returns (string memory) {
+    function symbol() public override view returns (string memory) {
         return _symbol;
     }
 
@@ -111,21 +111,21 @@ contract ERC777 is Context, IERC777, IERC20 {
      *
      * This implementation always returns `1`.
      */
-    function granularity() public view returns (uint256) {
+    function granularity() public override view returns (uint256) {
         return 1;
     }
 
     /**
      * @dev See {IERC777-totalSupply}.
      */
-    function totalSupply() public view returns (uint256) {
+    function totalSupply() public override(IERC20, IERC777) view returns (uint256) {
         return _totalSupply;
     }
 
     /**
      * @dev Returns the amount of tokens owned by an account (`tokenHolder`).
      */
-    function balanceOf(address tokenHolder) public view returns (uint256) {
+    function balanceOf(address tokenHolder) public override(IERC20, IERC777) view returns (uint256) {
         return _balances[tokenHolder];
     }
 
@@ -134,7 +134,7 @@ contract ERC777 is Context, IERC777, IERC20 {
      *
      * Also emits a {Transfer} event for ERC20 compatibility.
      */
-    function send(address recipient, uint256 amount, bytes calldata data) external {
+    function send(address recipient, uint256 amount, bytes calldata data) external override {
         _send(_msgSender(), _msgSender(), recipient, amount, data, "", true);
     }
 
@@ -146,7 +146,7 @@ contract ERC777 is Context, IERC777, IERC20 {
      *
      * Also emits a {Sent} event.
      */
-    function transfer(address recipient, uint256 amount) external returns (bool) {
+    function transfer(address recipient, uint256 amount) external override returns (bool) {
         require(recipient != address(0), "ERC777: transfer to the zero address");
 
         address from = _msgSender();
@@ -165,7 +165,7 @@ contract ERC777 is Context, IERC777, IERC20 {
      *
      * Also emits a {Transfer} event for ERC20 compatibility.
      */
-    function burn(uint256 amount, bytes calldata data) external {
+    function burn(uint256 amount, bytes calldata data) external override {
         _burn(_msgSender(), _msgSender(), amount, data, "");
     }
 
@@ -175,7 +175,7 @@ contract ERC777 is Context, IERC777, IERC20 {
     function isOperatorFor(
         address operator,
         address tokenHolder
-    ) public view returns (bool) {
+    ) public override view returns (bool) {
         return operator == tokenHolder ||
             (_defaultOperators[operator] && !_revokedDefaultOperators[tokenHolder][operator]) ||
             _operators[tokenHolder][operator];
@@ -184,7 +184,7 @@ contract ERC777 is Context, IERC777, IERC20 {
     /**
      * @dev See {IERC777-authorizeOperator}.
      */
-    function authorizeOperator(address operator) external {
+    function authorizeOperator(address operator) external override {
         require(_msgSender() != operator, "ERC777: authorizing self as operator");
 
         if (_defaultOperators[operator]) {
@@ -199,7 +199,7 @@ contract ERC777 is Context, IERC777, IERC20 {
     /**
      * @dev See {IERC777-revokeOperator}.
      */
-    function revokeOperator(address operator) external {
+    function revokeOperator(address operator) external override {
         require(operator != _msgSender(), "ERC777: revoking self as operator");
 
         if (_defaultOperators[operator]) {
@@ -214,7 +214,7 @@ contract ERC777 is Context, IERC777, IERC20 {
     /**
      * @dev See {IERC777-defaultOperators}.
      */
-    function defaultOperators() public view returns (address[] memory) {
+    function defaultOperators() public override view returns (address[] memory) {
         return _defaultOperatorsArray;
     }
 
@@ -231,6 +231,7 @@ contract ERC777 is Context, IERC777, IERC20 {
         bytes calldata operatorData
     )
     external
+    override
     {
         require(isOperatorFor(_msgSender(), sender), "ERC777: caller is not an operator for holder");
         _send(_msgSender(), sender, recipient, amount, data, operatorData, true);
@@ -241,7 +242,7 @@ contract ERC777 is Context, IERC777, IERC20 {
      *
      * Emits {Burned} and {Transfer} events.
      */
-    function operatorBurn(address account, uint256 amount, bytes calldata data, bytes calldata operatorData) external {
+    function operatorBurn(address account, uint256 amount, bytes calldata data, bytes calldata operatorData) external override {
         require(isOperatorFor(_msgSender(), account), "ERC777: caller is not an operator for holder");
         _burn(_msgSender(), account, amount, data, operatorData);
     }
@@ -253,7 +254,7 @@ contract ERC777 is Context, IERC777, IERC20 {
      * not have allowance, and accounts with allowance may not be operators
      * themselves.
      */
-    function allowance(address holder, address spender) public view returns (uint256) {
+    function allowance(address holder, address spender) public override view returns (uint256) {
         return _allowances[holder][spender];
     }
 
@@ -262,7 +263,7 @@ contract ERC777 is Context, IERC777, IERC20 {
      *
      * Note that accounts cannot have allowance issued by their operators.
      */
-    function approve(address spender, uint256 value) external returns (bool) {
+    function approve(address spender, uint256 value) external override returns (bool) {
         address holder = _msgSender();
         _approve(holder, spender, value);
         return true;
@@ -277,7 +278,7 @@ contract ERC777 is Context, IERC777, IERC20 {
     *
     * Emits {Sent}, {Transfer} and {Approval} events.
     */
-    function transferFrom(address holder, address recipient, uint256 amount) external returns (bool) {
+    function transferFrom(address holder, address recipient, uint256 amount) external override returns (bool) {
         require(recipient != address(0), "ERC777: transfer to the zero address");
         require(holder != address(0), "ERC777: transfer from the zero address");
 

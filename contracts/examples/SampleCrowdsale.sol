@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../crowdsale/validation/CappedCrowdsale.sol";
 import "../crowdsale/distribution/RefundableCrowdsale.sol";
@@ -14,6 +14,30 @@ import "../token/ERC20/ERC20Detailed.sol";
 contract SampleCrowdsaleToken is ERC20Mintable, ERC20Detailed {
     constructor () public ERC20Detailed("Sample Crowdsale Token", "SCT", 18) {
         // solhint-disable-previous-line no-empty-blocks
+    }
+
+    function totalSupply() public override(IERC20, ERC20) view returns (uint256) {
+        return super.totalSupply();
+    }
+
+    function balanceOf(address account) public override(IERC20, ERC20) view returns (uint256) {
+        return super.balanceOf(account);
+    }
+
+    function transfer(address recipient, uint256 amount) public override(IERC20, ERC20) returns (bool) {
+        return super.transfer(recipient, amount);
+    }
+
+    function transferFrom(address sender, address recipient, uint256 amount) public override(IERC20, ERC20) returns (bool) {
+        return super.transferFrom(sender, recipient, amount);
+    }
+
+    function approve(address spender, uint256 amount) public override(IERC20, ERC20) returns (bool) {
+        return super.approve(spender, amount);
+    }
+
+    function allowance(address owner, address spender) public override(IERC20, ERC20) view returns (uint256) {
+        return super.allowance(owner, spender);
     }
 }
 
@@ -49,5 +73,17 @@ contract SampleCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsal
         //As goal needs to be met for a successful crowdsale
         //the value needs to less or equal than a cap which is limit for accepted funds
         require(goal <= cap, "SampleCrowdSale: goal is greater than cap");
+    }
+
+    function _deliverTokens(address beneficiary, uint256 tokenAmount) internal override(Crowdsale, MintedCrowdsale) {
+        super._deliverTokens(beneficiary, tokenAmount);
+    }
+
+    function _forwardFunds() internal override(Crowdsale, RefundableCrowdsale) {
+       super._forwardFunds();
+    }
+
+    function _preValidatePurchase(address beneficiary, uint256 weiAmount) internal override(Crowdsale, CappedCrowdsale, TimedCrowdsale) view {
+        super._preValidatePurchase(beneficiary, weiAmount);
     }
 }

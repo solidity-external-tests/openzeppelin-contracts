@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../token/ERC721/ERC721Pausable.sol";
 import "./PauserRoleMock.sol";
@@ -18,5 +18,9 @@ contract ERC721PausableMock is ERC721Pausable, PauserRoleMock {
 
     function exists(uint256 tokenId) public view returns (bool) {
         return super._exists(tokenId);
+    }
+
+    function _removePauser(address account) internal override(PauserRole, PauserRoleMock) {
+        super._removePauser(account);
     }
 }

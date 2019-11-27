@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 /**
  * @dev Interface for `RelayHub`, the core contract of the GSN. Users should not need to interact with this contract
@@ -7,7 +7,7 @@ pragma solidity ^0.5.0;
  * See the https://github.com/OpenZeppelin/openzeppelin-gsn-helpers[OpenZeppelin GSN helpers] for more information on
  * how to deploy an instance of `RelayHub` on your local test network.
  */
-contract IRelayHub {
+abstract contract IRelayHub {
     // Relay management
 
     /**

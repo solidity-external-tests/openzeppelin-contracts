@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../validation/TimedCrowdsale.sol";
 import "../../math/SafeMath.sol";
@@ -9,7 +9,7 @@ import "../../token/ERC20/IERC20.sol";
  * @title PostDeliveryCrowdsale
  * @dev Crowdsale that locks tokens from withdrawal until it ends.
  */
-contract PostDeliveryCrowdsale is TimedCrowdsale {
+abstract contract PostDeliveryCrowdsale is TimedCrowdsale {
     using SafeMath for uint256;
 
     mapping(address => uint256) private _balances;
@@ -23,7 +23,7 @@ contract PostDeliveryCrowdsale is TimedCrowdsale {
      * @dev Withdraw tokens only after crowdsale ends.
      * @param beneficiary Whose tokens will be withdrawn.
      */
-    function withdrawTokens(address beneficiary) public {
+    function withdrawTokens(address beneficiary) public virtual {
         require(hasClosed(), "PostDeliveryCrowdsale: not closed");
         uint256 amount = _balances[beneficiary];
         require(amount > 0, "PostDeliveryCrowdsale: beneficiary is not due any tokens");
@@ -46,7 +46,7 @@ contract PostDeliveryCrowdsale is TimedCrowdsale {
      * @param beneficiary Token purchaser
      * @param tokenAmount Amount of tokens purchased
      */
-    function _processPurchase(address beneficiary, uint256 tokenAmount) internal {
+    function _processPurchase(address beneficiary, uint256 tokenAmount) internal virtual override {
         _balances[beneficiary] = _balances[beneficiary].add(tokenAmount);
         _deliverTokens(address(_vault), tokenAmount);
     }

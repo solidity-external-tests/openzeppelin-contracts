@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../../GSN/Context.sol";
 import "../Roles.sol";
@@ -37,7 +37,7 @@ contract MinterRole is Context {
         emit MinterAdded(account);
     }
 
-    function _removeMinter(address account) internal {
+    function _removeMinter(address account) internal virtual {
         _minters.remove(account);
         emit MinterRemoved(account);
     }

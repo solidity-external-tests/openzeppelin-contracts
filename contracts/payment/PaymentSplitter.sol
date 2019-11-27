@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../GSN/Context.sol";
 import "../math/SafeMath.sol";
@@ -56,7 +56,7 @@ contract PaymentSplitter is Context {
      * https://solidity.readthedocs.io/en/latest/contracts.html#fallback-function[fallback
      * functions].
      */
-    function () external payable {
+    receive () external payable {
         emit PaymentReceived(_msgSender(), msg.value);
     }
 

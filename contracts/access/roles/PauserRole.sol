@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../../GSN/Context.sol";
 import "../Roles.sol";
@@ -37,7 +37,7 @@ contract PauserRole is Context {
         emit PauserAdded(account);
     }
 
-    function _removePauser(address account) internal {
+    function _removePauser(address account) internal virtual {
         _pausers.remove(account);
         emit PauserRemoved(account);
     }

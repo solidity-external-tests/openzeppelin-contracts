@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0 <0.7.0;
 
 import "../validation/TimedCrowdsale.sol";
 import "../../math/SafeMath.sol";
@@ -9,7 +9,7 @@ import "../../math/SafeMath.sol";
  * Note that what should be provided to the constructor is the initial and final _rates_, that is,
  * the amount of tokens per wei contributed. Thus, the initial rate must be greater than the final rate.
  */
-contract IncreasingPriceCrowdsale is TimedCrowdsale {
+abstract contract IncreasingPriceCrowdsale is TimedCrowdsale {
     using SafeMath for uint256;
 
     uint256 private _initialRate;
@@ -32,7 +32,7 @@ contract IncreasingPriceCrowdsale is TimedCrowdsale {
      * The base rate function is overridden to revert, since this crowdsale doesn't use it, and
      * all calls to it are a mistake.
      */
-    function rate() public view returns (uint256) {
+    function rate() public override view returns (uint256) {
         revert("IncreasingPriceCrowdsale: rate() called");
     }
 
@@ -72,7 +72,7 @@ contract IncreasingPriceCrowdsale is TimedCrowdsale {
      * @param weiAmount The value in wei to be converted into tokens
      * @return The number of tokens _weiAmount wei will buy at present time
      */
-    function _getTokenAmount(uint256 weiAmount) internal view returns (uint256) {
+    function _getTokenAmount(uint256 weiAmount) internal override view returns (uint256) {
         uint256 currentRate = getCurrentRate();
         return currentRate.mul(weiAmount);
     }
