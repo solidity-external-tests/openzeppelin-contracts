@@ -1,4 +1,4 @@
-pragma solidity ^0.6.0;
+pragma solidity >= 0.7.0;
 
 import "../GSN/Context.sol";
 import "../token/ERC777/IERC777.sol";
@@ -145,4 +145,3 @@ contract ERC777SenderRecipientMock is Context, IERC777Sender, IERC777Recipient, 
         token.burn(amount, data);
     }
 }
-

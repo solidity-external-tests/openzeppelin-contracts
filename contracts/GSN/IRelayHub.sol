@@ -1,4 +1,4 @@
-pragma solidity ^0.6.0;
+pragma solidity >= 0.7.0;
 
 /**
  * @dev Interface for `RelayHub`, the core contract of the GSN. Users should not need to interact with this contract
@@ -264,4 +264,3 @@ interface IRelayHub {
      */
     function getNonce(address from) external view returns (uint256);
 }
-

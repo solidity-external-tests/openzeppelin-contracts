@@ -1,4 +1,4 @@
-pragma solidity ^0.6.0;
+pragma solidity >= 0.7.0;
 
 import "../../math/SafeMath.sol";
 import "../../utils/Arrays.sol";
@@ -61,12 +61,12 @@ abstract contract ERC20Snapshot is ERC20 {
      * Emits a {Snapshot} event that contains the same id.
      *
      * {_snapshot} is `internal`: you must decide how to expose it externally. This can be done both by
-     * guarding it with a system such as {AccessControl}, or by leaving it open to the public. 
+     * guarding it with a system such as {AccessControl}, or by leaving it open to the public.
      *
      * [WARNING]
      * ====
      * While an open way of calling {_snapshot} is required for certain trust minimization mechanisms such as forking,
-     * you must consider that it can potentially be used by attackers in two ways. 
+     * you must consider that it can potentially be used by attackers in two ways.
      *
      * First, it can be used to increase the cost of retrieval of values from snapshots, although it will grow
      * logarithmically thus rendering this attack ineffective in the long term. Second, it can be used to target

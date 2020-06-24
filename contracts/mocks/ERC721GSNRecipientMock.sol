@@ -1,4 +1,4 @@
-pragma solidity ^0.6.0;
+pragma solidity >= 0.7.0;
 
 import "../token/ERC721/ERC721.sol";
 import "../GSN/GSNRecipient.sol";
@@ -10,7 +10,7 @@ import "../GSN/GSNRecipientSignature.sol";
  */
 contract ERC721GSNRecipientMock is ERC721, GSNRecipient, GSNRecipientSignature {
     constructor(string memory name, string memory symbol, address trustedSigner)
-        
+
         ERC721(name, symbol)
         GSNRecipientSignature(trustedSigner)
     { }
