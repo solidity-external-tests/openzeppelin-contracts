@@ -30,7 +30,7 @@ contract ERC20MinterPauser is Context, AccessControl, ERC20Burnable, ERC20Pausab
      *
      * See {ERC20-constructor}.
      */
-    constructor(string memory name, string memory symbol) public ERC20(name, symbol) {
+    constructor(string memory name, string memory symbol) ERC20(name, symbol) {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
 
         _setupRole(MINTER_ROLE, _msgSender());
