@@ -16,7 +16,7 @@ pragma solidity ^0.6.0;
  * to protect against it, check out our blog post
  * https://blog.openzeppelin.com/reentrancy-after-istanbul/[Reentrancy After Istanbul].
  */
-contract ReentrancyGuard {
+abstract contract ReentrancyGuard {
     bool private _notEntered;
 
     constructor () internal {
