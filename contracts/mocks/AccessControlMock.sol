@@ -3,7 +3,7 @@ pragma solidity ^0.6.0;
 import "../access/AccessControl.sol";
 
 contract AccessControlMock is AccessControl {
-    constructor() {
+    constructor() public {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
     }
 

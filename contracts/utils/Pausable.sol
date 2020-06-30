@@ -27,7 +27,7 @@ contract Pausable is Context {
     /**
      * @dev Initializes the contract in unpaused state.
      */
-    constructor () {
+    constructor () internal {
         _paused = false;
     }
 

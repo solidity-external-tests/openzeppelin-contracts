@@ -96,7 +96,7 @@ contract SafeERC20Wrapper is Context {
 
     IERC20 private _token;
 
-    constructor (IERC20 token) {
+    constructor (IERC20 token) public {
         _token = token;
     }
 

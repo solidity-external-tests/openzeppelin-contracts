@@ -30,7 +30,7 @@ contract ERC721MinterPauser is Context, AccessControl, ERC721Burnable, ERC721Pau
      *
      * See {ERC721-constructor}.
      */
-    constructor(string memory name, string memory symbol) ERC721(name, symbol) {
+    constructor(string memory name, string memory symbol) public ERC721(name, symbol) {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
 
         _setupRole(MINTER_ROLE, _msgSender());

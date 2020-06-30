@@ -8,7 +8,7 @@ contract ERC20BurnableMock is ERC20Burnable {
         string memory symbol,
         address initialAccount,
         uint256 initialBalance
-    ) ERC20(name, symbol) {
+    ) public ERC20(name, symbol) {
         _mint(initialAccount, initialBalance);
     }
 }

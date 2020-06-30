@@ -4,7 +4,7 @@ import "../payment/PullPayment.sol";
 
 // mock class using PullPayment
 contract PullPaymentMock is PullPayment {
-    constructor () payable { }
+    constructor () public payable { }
 
     // test helper function to call asyncTransfer
     function callTransfer(address dest, uint256 amount) public {
