@@ -9,7 +9,7 @@ contract ERC20PausableMock is ERC20Pausable {
         string memory symbol,
         address initialAccount,
         uint256 initialBalance
-    ) ERC20(name, symbol) {
+    ) public ERC20(name, symbol) {
         _mint(initialAccount, initialBalance);
     }
 

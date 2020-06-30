@@ -4,7 +4,7 @@ import "../GSN/GSNRecipient.sol";
 import "../GSN/GSNRecipientSignature.sol";
 
 contract GSNRecipientSignatureMock is GSNRecipient, GSNRecipientSignature {
-    constructor(address trustedSigner) GSNRecipientSignature(trustedSigner) { }
+    constructor(address trustedSigner) public GSNRecipientSignature(trustedSigner) { }
 
     event MockFunctionCalled();
 

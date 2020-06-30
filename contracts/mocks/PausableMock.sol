@@ -6,7 +6,7 @@ contract PausableMock is Pausable {
     bool public drasticMeasureTaken;
     uint256 public count;
 
-    constructor () {
+    constructor () public {
         drasticMeasureTaken = false;
         count = 0;
     }

@@ -7,7 +7,7 @@ contract ArraysImpl {
 
     uint256[] private _array;
 
-    constructor (uint256[] memory array) {
+    constructor (uint256[] memory array) public {
         _array = array;
     }
 

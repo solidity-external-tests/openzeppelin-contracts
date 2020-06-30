@@ -23,7 +23,7 @@ import "./escrow/Escrow.sol";
 contract PullPayment {
     Escrow private _escrow;
 
-    constructor () {
+    constructor () internal {
         _escrow = new Escrow();
     }
 
